@@ -1,0 +1,167 @@
+openapi: 3.0.1
+info:
+  title: ODT - API2
+  description: "REST API for communication between new middle-layer app as client and odt server app"
+  contact:
+    name:  "MERKANTIL-ODT squad"
+    email: merkantil_odt@otpbank.hu
+    url: "https://confluence.otpbank.hu/pages/viewpage.action?pageId=???????"
+  version: 0.0.0
+externalDocs:
+  description: "Merkantil ODT API2 confluence page"
+  url: https://confluence.otpbank.hu/display/MP/API+2
+servers:
+  - url: TODO_DEV
+  - url: TODO_TEST
+tags:
+  - name: offer
+    description: "Api interfaces for offer phase."
+    externalDocs:
+      description: Confluence link
+      url: https://confluence.otpbank.hu/pages/viewpage.action?pageId=???????
+  - name: application
+    description: "Api interfaces to configure current application"
+    externalDocs:
+      description: Confluence link
+      url: https://confluence.otpbank.hu/pages/viewpage.action?pageId=???????
+
+paths:
+  /odt-actions:
+    post:
+      operationId: postODTActions
+      tags:
+        - offer
+      summary: "Executing ODT actions."
+      description: "Executing ODT actions on the ODT server."
+      parameters:
+        - $ref: '#/components/parameters/XSessionIdentifier'
+      requestBody:
+        description: "Sequence of actions to perform on the ODT server."
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ODTActionSequence'
+        required: true
+      responses:
+        '200':
+          description: "The response contains the full state of ODT instance"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ODTSateResponse'
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageResponse'
+        '403':
+          description: "Forbidden - the server understood the request, but will not fulfill it."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageResponse'
+
+components:
+  schemas:
+    ErrorMessageResponse:
+      type: object
+      description: "ErrorMessageResponse"
+      required:
+        - correlationId
+        - messages
+      properties:
+        correlationId:
+          description: "Unique identifier"
+          type: string
+        messages:
+          description: "Unique identifier"
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorMessage"
+    ErrorMessage:
+      type: "object"
+      description: "ErrorMessage"
+      required:
+        - code
+      properties:
+        code:
+          description: "Unique code of the error"
+          type: "string"
+        params:
+          $ref: "#/components/schemas/ErrorMessageParam"
+    ErrorMessageParam:
+      description: "Error message parameters"
+      type: "object"
+      additionalProperties:
+        type: "object"
+    ODTActionSequence:
+      description: "Sequence of ODT actions."
+      type: "object"
+      properties:
+        actions:
+          description: "Sequence of ODT actions"
+          type: string
+    ODTSateResponse:
+      description: "Response contains the full state of ODT instance."
+      type: "object"
+      properties:
+        odtState:
+          description: "List of forms attribute state"
+          type: array
+          items:
+            $ref: "#/components/schemas/ODTField"
+    ODTField:
+      type: "object"
+      required:
+        - formId
+        - fieldId
+        - value
+      description: "Forms attribute state"
+      properties:
+        formId:
+          type: "string"
+          example: "LeaseForm"
+          description: "The ID of the form which contains the field"
+        actionId:
+          type: "string"
+          example: "cbProduct"
+          description: "The ID of the field"
+        value: 
+          type: "string"
+          example: "1"
+          description: "The value of the field"
+    
+  parameters:
+    XSessionIdentifier:
+      name: X-Session-Identifier
+      in: header
+      description: "Parameter to be identify the current middle layer session "
+      schema:
+        type: string
+        example: 095090d3-935a-4e56-a684-a16eba522823
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      description: "Current application resource identifier."
+      schema:
+        type : string
+        example: "HK214324324"
+    DealerId:
+      name: dealerId
+      in: path
+      required: true
+      description: "Current dealer id."
+      schema:
+        type: string
+        example: "3123421"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []

@@ -1,0 +1,15 @@
+docker run -it -p 5900:5900 -w /work -v /Users/kroo1/tmp/vscode:/work vscode_linux sh
+
+Xvfb :99 &
+export DISPLAY=:99
+
+apt update
+apt install x11vnc
+
+x11vnc -storepasswd xxx vncpwd
+
+x11vnc -display :99 -forever -rfbauth vncpwd &
+
+/usr/bin/vncserver %i -geometry 1280x1024
+
+./startrestd.sh
