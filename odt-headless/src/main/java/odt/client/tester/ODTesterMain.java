@@ -100,16 +100,18 @@ public class ODTesterMain {
 
     private void saveFormsState() {
         createDir();
-        try {
-            File stateFile = new File(DIR_PATH + "/state_"+action_counter);
-            if (!stateFile.exists()) {
-                stateFile.createNewFile();
-                FileWriter writer = new FileWriter(stateFile);
-                writer.write(getState());
-                writer.close();
+        if(DIR_PATH != null) {
+            try {
+                File stateFile = new File(DIR_PATH + "/state_"+action_counter);
+                if (!stateFile.exists()) {
+                    stateFile.createNewFile();
+                    FileWriter writer = new FileWriter(stateFile);
+                    writer.write(getState());
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -155,9 +157,8 @@ public class ODTesterMain {
     }
 
     private void saveAction() {
-        if(context.NOTEST) return;
+        if(context.NOTEST || DIR_PATH == null) return;
         if(ACTION_PATH == null) {
-            createDir();
             try {
                 File actionsFile = new File(DIR_PATH + "/actions");
                 if (!actionsFile.exists()) {
@@ -234,10 +235,12 @@ public class ODTesterMain {
         }else {
             loadDirH(fileToSave);
         }
-        loadState0();
-        loading = false;
-        saveFormsState();
-        runActions();
+        if(LOAD_DIR_PATH != null) {
+            loadState0();
+            loading = false;
+            saveFormsState();
+            runActions();
+        }
     }
 
     public void runActions(String actions) throws IOException {
