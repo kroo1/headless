@@ -45,8 +45,8 @@ class OdtHeadlessApplicationTests {
 	@Test
 	public void stateJSON() throws Exception {
 		ODTSateResponse resp = new ODTSateResponse();
-		resp.addOdtStateItem(new ODTField().actionId("action1").formId("form1").value("1"));
-		resp.addOdtStateItem(new ODTField().actionId("action2").formId("form2").value("2"));
+		resp.addOdtStateItem(new ODTField().actionId("action1").value("1"));
+		resp.addOdtStateItem(new ODTField().actionId("action2").value("2"));
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println(mapper.writeValueAsString(resp));
 	}

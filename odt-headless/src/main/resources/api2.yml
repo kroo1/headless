@@ -5,25 +5,15 @@ info:
   contact:
     name:  "MERKANTIL-ODT squad"
     email: merkantil_odt@otpbank.hu
-    url: "https://confluence.otpbank.hu/pages/viewpage.action?pageId=???????"
   version: 0.0.0
-externalDocs:
-  description: "Merkantil ODT API2 confluence page"
-  url: https://confluence.otpbank.hu/display/MP/API+2
 servers:
   - url: TODO_DEV
   - url: TODO_TEST
 tags:
   - name: offer
     description: "Api interfaces for offer phase."
-    externalDocs:
-      description: Confluence link
-      url: https://confluence.otpbank.hu/pages/viewpage.action?pageId=???????
   - name: application
     description: "Api interfaces to configure current application"
-    externalDocs:
-      description: Confluence link
-      url: https://confluence.otpbank.hu/pages/viewpage.action?pageId=???????
 
 paths:
   /odt-actions:
@@ -41,6 +31,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ODTActionSequence'
+        required: true
+      responses:
+        '200':
+          description: "The response contains the full state of ODT instance"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ODTSateResponse'
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageResponse'
+        '403':
+          description: "Forbidden - the server understood the request, but will not fulfill it."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessageResponse'
+
+  /odt-actions-test:
+    post:
+      operationId: postODTActionsTest
+      tags:
+        - offer
+      summary: "Executing ODT actions."
+      description: "Executing ODT actions on the ODT server."
+      parameters:
+        - $ref: '#/components/parameters/XSessionIdentifier'
+      requestBody:
+        description: "Sequence of actions to perform on the ODT server."
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ODTActionSequenceTest'
         required: true
       responses:
         '200':
@@ -102,6 +128,15 @@ components:
         actions:
           description: "Sequence of ODT actions"
           type: string
+    ODTActionSequenceTest:
+      description: "Sequence of ODT actions."
+      type: "object"
+      properties:
+        actions:
+          description: "Sequence of ODT actions"
+          type: array
+          items:
+            type: string
     ODTSateResponse:
       description: "Response contains the full state of ODT instance."
       type: "object"
@@ -114,15 +149,10 @@ components:
     ODTField:
       type: "object"
       required:
-        - formId
         - fieldId
         - value
       description: "Forms attribute state"
       properties:
-        formId:
-          type: "string"
-          example: "LeaseForm"
-          description: "The ID of the form which contains the field"
         actionId:
           type: "string"
           example: "cbProduct"
@@ -130,7 +160,7 @@ components:
         value: 
           type: "string"
           example: "1"
-          nullable: "true"
+          nullable: true
           description: "The value of the field"
     
   parameters:

@@ -3,6 +3,7 @@ package odt.api;
 import java.io.FileWriter;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,12 +14,14 @@ import org.springframework.web.context.request.NativeWebRequest;
 import odt.client.ODTClient;
 import odt.client.api.ApiUtil;
 import odt.client.api.OdtActionsApi;
+import odt.client.api.OdtActionsTestApi;
 import odt.client.model.ODTActionSequence;
+import odt.client.model.ODTActionSequenceTest;
 import odt.client.model.ODTSateResponse;
 import odt.context.Context;
 
 @RestController
-public class OdtActionsApiController implements OdtActionsApi {
+public class OdtActionsApiController implements OdtActionsApi, OdtActionsTestApi {
 
     @Autowired
     NativeWebRequest request;
@@ -36,30 +39,6 @@ public class OdtActionsApiController implements OdtActionsApi {
             return new ResponseEntity(new ODTSateResponse(), HttpStatus.FORBIDDEN);
         }
         try {
-
-
-
-            /*new ODTClient();
-            int hash = odTActionSequence.getActions().hashCode();
-
-            BufferedReader br = null;
-            try {
-                StringBuilder res = new StringBuilder();
-                FileReader reader = new FileReader("/workspaces/ActionTest/odt-headless/mock/"+hash);
-                br = new BufferedReader(reader);
-                String line;
-                while((line = br.readLine())!=null) {
-                    res.append(line).append("\n");
-                }
-                String state = res.toString();
-                getRequest().ifPresent(request -> {
-                    ApiUtil.setExampleResponse(request, "application/json", state);
-                });
-            }catch(Exception ex) {
-                ex.printStackTrace();
-            }finally {
-                if(br != null) br.close();
-            }*/
             ODTClient odt = odts.get(xSessionIdentifier);
             if(odt == null) {
                 odt = new ODTClient();
@@ -85,5 +64,12 @@ public class OdtActionsApiController implements OdtActionsApi {
             e.printStackTrace();
             return new ResponseEntity(new ODTSateResponse(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<ODTSateResponse> postODTActionsTest(ODTActionSequenceTest odTActionSequence, String xSessionIdentifier) {
+        String actionstr = odTActionSequence.getActions().stream().collect(Collectors.joining("\n", "", ""));
+        ODTActionSequence actions = new ODTActionSequence().actions(actionstr);
+        return postODTActions(actions, xSessionIdentifier);
     }
 }

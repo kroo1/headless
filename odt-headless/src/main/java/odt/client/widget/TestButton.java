@@ -20,7 +20,7 @@ public class TestButton extends AComponent implements IButton {
     @Override
     public ODTField persist() {
         ODTField field  = new ODTField();
-        field.formId(formId).actionId(getName());
+        field.actionId(getName());
         return field;
     }
 

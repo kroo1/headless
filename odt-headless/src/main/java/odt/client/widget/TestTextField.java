@@ -21,7 +21,7 @@ public class TestTextField extends AComponent implements ITextField {
     @Override
     public ODTField persist() {
         ODTField field  = new ODTField();
-        field.formId(formId).actionId(getName()).value(impl.getText());
+        field.actionId(getName()).value(impl.getText());
         return field;
     }
 

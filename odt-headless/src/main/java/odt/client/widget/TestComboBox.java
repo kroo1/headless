@@ -25,7 +25,7 @@ public class TestComboBox extends AComponent implements IComboBox {
     @Override
     public ODTField persist() {
         ODTField field  = new ODTField();
-        field.formId(formId).actionId(getName()).value(""+impl.getSelectedIndex());
+        field.actionId(getName()).value(""+impl.getSelectedIndex());
         return field;
     }
 
