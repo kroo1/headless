@@ -1,4 +1,4 @@
-package odt.client.tester;
+package odt.runner;
 
 public interface IRunner {
 

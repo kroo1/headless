@@ -1,4 +1,4 @@
-package odt.client.tester;
+package odt.runner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -8,20 +8,37 @@ import odt.client.IForm;
 import odt.context.Context;
 import odt.context.ODTComponentFactory;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.EventListener;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
-public class ODTesterMain {
+public class ODTRunnerHelper {
 
-    private final Context context = ODTComponentFactory.getContext();
+    private final Context context;
+
+    public ODTRunnerHelper(Context context) {
+        this.context = context;
+    }
 
     private String DIR_NAME;
     private String LOAD_DIR_PATH;

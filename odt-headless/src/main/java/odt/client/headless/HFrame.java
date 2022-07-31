@@ -4,7 +4,7 @@ import odt.client.IComponent;
 import odt.client.IContainer;
 import odt.client.IForm;
 import odt.client.IFrame;
-import odt.client.tester.IRootContainer;
+import odt.runner.IRootContainer;
 
 import java.util.HashMap;
 

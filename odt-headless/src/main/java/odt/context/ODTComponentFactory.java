@@ -10,9 +10,9 @@ import odt.client.IFrame;
 import odt.client.ITextField;
 import odt.client.headless.*;
 import odt.client.swing.*;
-import odt.client.tester.HeadlessTestRunner;
-import odt.client.tester.IRunner;
-import odt.client.tester.SwingTestRunner;
+import odt.runner.HeadlessRunner;
+import odt.runner.IRunner;
+import odt.runner.SwingRunner;
 
 public class ODTComponentFactory {
 
@@ -68,9 +68,9 @@ public class ODTComponentFactory {
 
     public static IRunner createRunner(List<String> lines) {
         if(SWING_MODE) {
-            return new SwingTestRunner(lines);
+            return new SwingRunner(lines);
         }else {
-            return new HeadlessTestRunner(lines);
+            return new HeadlessRunner(lines);
         }
     }
 
@@ -91,7 +91,7 @@ public class ODTComponentFactory {
         if(SWING_MODE) {
             if(context == null) {
                 context = new Context();
-                context.init();
+                //context.init();
             }
             return context;
         }else {
@@ -105,7 +105,7 @@ public class ODTComponentFactory {
             if(c == null) {
                 c = new Context();
                 hcontext.set(c);
-                c.init();
+                //c.init();
             }
             return hcontext.get();
         }

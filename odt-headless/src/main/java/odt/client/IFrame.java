@@ -1,6 +1,6 @@
 package odt.client;
 
-import odt.client.tester.IRootContainer;
+import odt.runner.IRootContainer;
 
 public interface IFrame extends IRootContainer {
 

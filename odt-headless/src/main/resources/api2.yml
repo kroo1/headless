@@ -121,7 +121,6 @@ components:
       properties:
         formId:
           type: "string"
-          nullable: true
           example: "LeaseForm"
           description: "The ID of the form which contains the field"
         actionId:
@@ -131,6 +130,7 @@ components:
         value: 
           type: "string"
           example: "1"
+          nullable: "true"
           description: "The value of the field"
     
   parameters:

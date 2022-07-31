@@ -5,7 +5,7 @@ import odt.client.IContainer;
 import odt.client.IForm;
 import odt.client.IFrame;
 import odt.client.model.ODTField;
-import odt.client.tester.IRootContainer;
+import odt.runner.IRootContainer;
 
 import javax.swing.*;
 import java.awt.*;

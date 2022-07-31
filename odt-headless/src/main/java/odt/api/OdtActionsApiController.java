@@ -1,23 +1,18 @@
-package odt.client.api;
+package odt.api;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import io.swagger.annotations.ApiParam;
 import odt.client.ODTClient;
+import odt.client.api.ApiUtil;
+import odt.client.api.OdtActionsApi;
 import odt.client.model.ODTActionSequence;
 import odt.client.model.ODTSateResponse;
 import odt.context.Context;
@@ -36,7 +31,7 @@ public class OdtActionsApiController implements OdtActionsApi {
     private static ConcurrentHashMap<String, ODTClient> odts = new ConcurrentHashMap<>();
     
     @Override
-    public ResponseEntity<ODTSateResponse> postODTActions(@ApiParam(value = "Sequence of actions to perform on the ODT server." ,required=true )  @Valid @RequestBody ODTActionSequence odTActionSequence,@ApiParam(value = "Parameter to be identify the current middle layer session " ) @RequestHeader(value="X-Session-Identifier", required=false) String xSessionIdentifier) {
+    public ResponseEntity<ODTSateResponse> postODTActions(ODTActionSequence odTActionSequence, String xSessionIdentifier) {
         if(odTActionSequence == null || odTActionSequence.getActions() == null) {
             return new ResponseEntity(new ODTSateResponse(), HttpStatus.FORBIDDEN);
         }

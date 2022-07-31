@@ -7,8 +7,8 @@ import javax.swing.event.DocumentListener;
 
 import odt.client.IComponent;
 import odt.client.IDialog;
-import odt.client.tester.IRootContainer;
-import odt.client.tester.ODTesterMain;
+import odt.runner.IRootContainer;
+import odt.runner.ODTRunnerHelper;
 
 import java.awt.event.ActionListener;
 
@@ -18,51 +18,50 @@ public class Context {
     public IRootContainer ROOT;
     public static boolean NOTEST = false;
 
-    public void init() {
-        oDTesterMain = new ODTesterMain();
+    public Context() {
+        oDTRunnerHelper = new ODTRunnerHelper(this);
     }
 
-
-    private ODTesterMain oDTesterMain;
+    private final ODTRunnerHelper oDTRunnerHelper;
 
     public void runTest() throws IOException {
-        oDTesterMain.runTest();
+        oDTRunnerHelper.runTest();
     }
 
     public void runTest(File fileToSave) throws IOException {
-        oDTesterMain.runTest(fileToSave);
+        oDTRunnerHelper.runTest(fileToSave);
     }
 
     public void runActions(String actions) throws IOException {
-        oDTesterMain.runActions(actions);
+        oDTRunnerHelper.runActions(actions);
     }
 
     public ActionListener getActionListener(IComponent c, ActionListener l) {
-        return oDTesterMain.getActionListener(c, l);
+        return oDTRunnerHelper.getActionListener(c, l);
     }
 
     public DocumentListener getDocumentListener(IComponent c, DocumentListener l) {
-        return oDTesterMain.getDocumentListener(c, l);
+        return oDTRunnerHelper.getDocumentListener(c, l);
     }
 
     public void startTest() {
-        oDTesterMain.startTest();
+        oDTRunnerHelper.startTest();
     }
 
     public void runAction(String line) {
-        oDTesterMain.runAction(line);
+        oDTRunnerHelper.runAction(line);
     }
 
     public void dialogStart(IDialog dialog) {
-        oDTesterMain.dialogStart(dialog);
+        oDTRunnerHelper.dialogStart(dialog);
     }
 
     public void dialogEnd(IDialog dialog, int closeAction) {
-        oDTesterMain.dialogEnd(dialog, closeAction);
+        oDTRunnerHelper.dialogEnd(dialog, closeAction);
     }
 
     public String getState() {
-        return oDTesterMain.getState();
+        return oDTRunnerHelper.getState();
     }
     
 }
