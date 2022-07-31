@@ -30,11 +30,10 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+#.vscode/
 
 ### OSX ###
-.DS_Store
+**/.DS_Store
 
 ###  MOCK ###
-mock/**
-test/**
+merkodt/**

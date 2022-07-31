@@ -65,8 +65,7 @@
 			<artifactId>validation-api</artifactId>
 			<version>2.0.1.Final</version>
 		</dependency>
-
-
+		
 	</dependencies>
 	<build>
 		<plugins>
@@ -102,6 +101,7 @@
 							<generateApis>true</generateApis> 
       						<generateModels>true</generateModels> 
 							<configOptions>
+								<openApiNullable>true</openApiNullable>	
 							    <sourceFolder>src/gen/java/main</sourceFolder>							
 								<delegatePattern>false</delegatePattern>
 								<interfaceOnly>true</interfaceOnly>

@@ -1,48 +1,37 @@
 package odt.client;
 
-import java.awt.event.ActionListener;
+public interface IComboBox extends IComponent {
 
-public interface IComboBox {
+    default int getSelectedIndex() {
+        return ((IComboBox)getIComponentImpl()).getSelectedIndex();
+    }
 
-    String getName();
+    default Object getSelectedItem() {
+        return ((IComboBox)getIComponentImpl()).getSelectedItem();
+    }
 
-    boolean isEnabled();
+    default void setSelectedIndex(int index) {
+        ((IComboBox)getIComponentImpl()).setSelectedIndex(index);
+    }
 
-    //boolean isSelected();
+    default void addItem(Object item) {
+        ((IComboBox)getIComponentImpl()).addItem(item);
+    }
 
-    boolean isVisible();
+    default void removeAllItems() {
+        ((IComboBox)getIComponentImpl()).removeAllItems();
+    }
 
-    void setBounds(int x, int y, int w, int h);
+    default void addItems(Object[] items) {
+        ((IComboBox)getIComponentImpl()).addItems(items);
+    }
 
-    Object getOrig();
+    default int getItemCount() {
+        return ((IComboBox)getIComponentImpl()).getItemCount();
+    }
 
-    int getSelectedIndex();
+    default Object getElementAt(int i) {
+        return ((IComboBox)getIComponentImpl()).getElementAt(i);
+    }
 
-    Object getSelectedItem();
-
-    void setSelectedIndex(int index);
-
-    void setEnabled(boolean enable);
-
-    //void setSelected(boolean selected);
-
-    void setVisible(boolean visible);
-
-    void addActionListener(ActionListener actionListener);
-
-    void setName(String name);
-
-    ActionListener[] getActionListeners();
-
-    void removeActionListener(ActionListener l);
-
-    void addItem(Object item);
-
-    void removeAllItems();
-
-    void addItems(Object[] items);
-
-    int getItemCount();
-
-    Object getElementAt(int i);
 }

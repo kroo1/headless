@@ -2,13 +2,19 @@ package odt.client.swing;
 
 import odt.client.IComponent;
 import odt.client.ITextField;
+import odt.client.model.ODTField;
 
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import java.util.EventListener;
 import java.util.Map;
 
-public class STextField extends JTextField implements ITextField, IComponent{
+public class STextField extends JTextField implements ITextField {
+
+    @Override
+    public IComponent getIComponentImpl() {
+        return this;
+    }
 
     private IComponent wrapper;
 
@@ -16,9 +22,14 @@ public class STextField extends JTextField implements ITextField, IComponent{
         this.wrapper = wrapper;
     }
 
-    @Override
+    /*@Override
     public String persist() {
-        return null;
+        return wrapper.persist();
+    }*/
+
+    @Override
+    public ODTField persist() {
+        return wrapper.persist();
     }
 
     @Override
@@ -49,6 +60,11 @@ public class STextField extends JTextField implements ITextField, IComponent{
     @Override
     public void setFormId(String name) {
         wrapper.setFormId(name);
+    }
+
+    @Override
+    public String getFormId(){
+        return wrapper.getFormId();
     }
 
     @Override

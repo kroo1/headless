@@ -4,13 +4,19 @@ import odt.client.IComponent;
 import odt.client.IContainer;
 import odt.client.IForm;
 import odt.client.IFrame;
+import odt.client.model.ODTField;
 import odt.client.tester.IRootContainer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-public class SFrame extends JFrame implements IFrame, IComponent, IRootContainer {
+public class SFrame extends JFrame implements IFrame {
+
+    @Override
+    public IComponent getIComponentImpl() {
+        return this;
+    }
 
     private final IRootContainer wrapper;
 
@@ -18,9 +24,14 @@ public class SFrame extends JFrame implements IFrame, IComponent, IRootContainer
         this.wrapper = (IRootContainer)wrapper;
     }
 
-    @Override
+    /*@Override
     public String persist() {
-        return null;
+        return wrapper.persist();
+    }*/
+
+    @Override
+    public ODTField persist() {
+        return wrapper.persist();
     }
 
     @Override

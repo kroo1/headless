@@ -2,28 +2,22 @@ package odt.client;
 
 import javax.swing.event.DocumentListener;
 
-public interface ITextField {
-    void addDocumentListener(DocumentListener documentListener);
+public interface ITextField extends IComponent {
+    
+    default void addDocumentListener(DocumentListener documentListener) {
+        ((ITextField)getIComponentImpl()).addDocumentListener(documentListener);
+    }
 
-    String getText();
+    default String getText() {
+        return ((ITextField)getIComponentImpl()).getText();
+    }
 
-    boolean isEnabled();
+    default void setText(String value) {
+        ((ITextField)getIComponentImpl()).setText(value);
+    }
 
-    boolean isVisible();
+    default Object getDocument() {
+        return ((ITextField)getIComponentImpl()).getDocument();
+    }
 
-    String getName();
-
-    void setEnabled(boolean enable);
-
-    void setVisible(boolean visible);
-
-    void setText(String value);
-
-    Object getOrig();
-
-    void setName(String name);
-
-    void setBounds(int x, int y, int w, int h);
-
-    Object getDocument();
 }

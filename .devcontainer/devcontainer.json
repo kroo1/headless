@@ -29,7 +29,8 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [5900],
 
-    "mounts": ["source=${localEnv:HOME}/.m2,target=/home/vscode/.m2,type=bind,consistency=cached"],
+    "mounts": ["source=${localEnv:HOME}/.m2,target=/home/vscode/.m2,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/work/ActionTest_test,target=/home/vscode/test,type=bind,consistency=cached"],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	//"postAttachCommand": ["/usr/bin/Xvfb :99 && x11vnc -display :99 -forever -rfbauth vncpwd"],

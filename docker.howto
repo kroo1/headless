@@ -1,14 +1,14 @@
 docker run -it -p 8080:8080 -p 5900:5900 -w /work -v /Users/kroo1/.m2:/maven_rep -v /Users/kroo1/work/ActionTest/odt-headless:/work odt:v1 sh
 
-Xvfb :99 &
+sudo Xvfb :99 &
 export DISPLAY=:99
 
 apt update
 apt install x11vnc
 
-x11vnc -storepasswd xxx vncpwd
+sudo x11vnc -storepasswd xxx vncpwd
 
-x11vnc -display :99 -forever -rfbauth vncpwd &
+sudo x11vnc -display :99 -forever -rfbauth vncpwd &
 
 ./startrestd.sh
 

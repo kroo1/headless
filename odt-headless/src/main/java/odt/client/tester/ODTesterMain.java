@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ODTesterMain {
 
-    private final Context context = ODTComponentFactory.getContext();;
+    private final Context context = ODTComponentFactory.getContext();
 
     private String DIR_NAME;
     private String LOAD_DIR_PATH;
@@ -191,19 +191,22 @@ public class ODTesterMain {
                 //String name = ((Component) source).getName();
                 IComponent s = ((IComponent) source).getWrapper();
                 if(s.testAction())
-                addAction(s.getName(), s.getPValue());
+                addAction(s.getFormId(), s.getName(), s.getPValue());
             }
         }else if(e instanceof DocumentEvent ) {
             Object source = c;
             if(source != null && source instanceof IComponent) {
                 if(c.testAction())
-                    addAction(c.getName(), c.getPValue());
+                    addAction(c.getFormId(), c.getName(), c.getPValue());
             }
         }
         return true;
     }
 
-    private void addAction(String action, String value) {
+    private void addAction(String formId, String action, String value) {
+        if(formId != null) {
+            actions.append(formId + ",");
+        }
         if(value != null) {
             actions.append(action + "," + value + "\n");
         }else {
@@ -349,7 +352,7 @@ public class ODTesterMain {
             //addAction(DIALOG_CLOSE, res[1]);
             opane.setValue(res[1]);
         }else {
-            ActionItems actionItems = actionMap.get(res[0]);
+            ActionItems actionItems = actionMap.get(res[0]+"."+res[1]);
             if (actionItems != null) actionItems.c.runAction(actionItems.l, res);
         }
     }
@@ -386,7 +389,7 @@ public class ODTesterMain {
         dialogs.push(dialog);
         event = null;
         firePopupOpenClose();
-        addAction(DIALOG_OPEN, null);
+        addAction(null, DIALOG_OPEN, null);
     }
 
     private final String DIALOG_OPEN = "DIALOG_OPEN";
@@ -395,7 +398,7 @@ public class ODTesterMain {
     public void dialogEnd(IDialog dialog, int closeAction) {
         context.ROOT.removeForm(dialog.getForm());
         firePopupOpenClose();
-        addAction(DIALOG_CLOSE, Integer.toString(closeAction));
+        addAction(null, DIALOG_CLOSE, Integer.toString(closeAction));
     }
 
     private class ActionItems {
@@ -411,12 +414,12 @@ public class ODTesterMain {
 
     public ActionListener getActionListener(IComponent c, ActionListener l) {
         if(l instanceof ListenerAdapter) return l;
-        if(context.TEST_MODE && c.getName() != null) {
+        if(context.TEST_MODE && c.getFormId() != null && c.getName() != null) {
             ListenerAdapter la = new ListenerAdapter(l, null, null);
             ActionItems newV = new ActionItems(c, la);
-            ActionItems oldV = actionMap.replace(c.getName(), newV);
+            ActionItems oldV = actionMap.replace(c.getFormId()+"."+c.getName(), newV);
             if(oldV == null) {
-                actionMap.put(c.getName(), newV);
+                actionMap.put(c.getFormId()+"."+c.getName(), newV);
             }
             return la;
         }
@@ -424,12 +427,12 @@ public class ODTesterMain {
     }
 
     public DocumentListener getDocumentListener(IComponent c, DocumentListener l) {
-        if(context.TEST_MODE) {
+        if(context.TEST_MODE && c.getFormId() != null && c.getName() != null) {
             ListenerAdapter la = new ListenerAdapter(null, l, c);
             ActionItems newV =new ActionItems(c, la);
-            ActionItems oldV = actionMap.replace(c.getName(), newV);
+            ActionItems oldV = actionMap.replace(c.getFormId()+"."+c.getName(), newV);
             if(oldV == null) {
-                actionMap.put(c.getName(), newV);
+                actionMap.put(c.getFormId()+"."+c.getName(), newV);
             }
             return la;
         }

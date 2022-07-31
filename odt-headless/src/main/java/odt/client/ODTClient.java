@@ -5,9 +5,16 @@ import odt.client.widget.TestFrame;
 
 public class ODTClient {
 
+    private Context context;
+
+    public Context init() {
+        context = ODTComponentFactory.getContext(context);
+        return context;
+    }
+
     public ODTClient() {
         TestFrame f = new TestFrame();
-        Context context = ODTComponentFactory.getContext();
+        context = ODTComponentFactory.getContext(context);
         context.ROOT = f;
         ActionPanel p = new ActionPanel();
         f.setContentPane((IContainer) p.getForm());

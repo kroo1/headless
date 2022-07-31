@@ -1,14 +1,13 @@
 package odt.client.headless;
 
 import odt.client.IComponent;
-import odt.client.IContainer;
 import odt.client.IDialog;
 import odt.client.IForm;
-import odt.client.tester.ODTesterMain;
+import odt.client.widget.ADialog;
 
 import java.util.Vector;
 
-public class HForm extends AComponent implements IForm, IContainer {
+public class HForm extends AComponent implements IForm {
     public HForm(IComponent wrapper) {
         super(wrapper);
     }
@@ -16,10 +15,14 @@ public class HForm extends AComponent implements IForm, IContainer {
     private IDialog dialog;
     private int dialogResp;
 
+    private IComponent getFormWrapper() {
+        return getWrapper();
+    }
+
     @Override
     public int showConfirmDialog(String title, int optionType, int messageType) {
-        dialog = new IDialog() {
-            IComponent form = getWrapper();
+        dialog = new ADialog() {
+            IComponent form = getFormWrapper();
             Object value;
             @Override
             public void setValue(Object obj) {

@@ -15,11 +15,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import odt.client.api.OdtActionsApiController;
+import odt.client.model.ODTField;
+import odt.client.model.ODTSateResponse;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @SpringBootTest(classes = OdtActionsApiController.class)
@@ -43,6 +47,15 @@ class OdtHeadlessApplicationTests {
 			.content(body)
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
+	}
+
+	@Test
+	public void stateJSON() throws Exception {
+		ODTSateResponse resp = new ODTSateResponse();
+		resp.addOdtStateItem(new ODTField().actionId("action1").formId("form1").value("1"));
+		resp.addOdtStateItem(new ODTField().actionId("action2").formId("form2").value("2"));
+		ObjectMapper mapper = new ObjectMapper();
+		System.out.println(mapper.writeValueAsString(resp));
 	}
 
 }

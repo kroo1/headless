@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.validation.Valid;
 
@@ -18,8 +19,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import io.swagger.annotations.ApiParam;
 import odt.client.Context;
 import odt.client.ODTClient;
-import odt.client.ODTComponentFactory;
-import odt.client.api.OdtActionsApi;
 import odt.client.model.ODTActionSequence;
 import odt.client.model.ODTSateResponse;
 
@@ -33,6 +32,8 @@ public class OdtActionsApiController implements OdtActionsApi {
     public Optional<NativeWebRequest> getRequest() {
         return Optional.of(request);
     }
+
+    private static ConcurrentHashMap<String, ODTClient> odts = new ConcurrentHashMap<>();
     
     @Override
     public ResponseEntity<ODTSateResponse> postODTActions(@ApiParam(value = "Sequence of actions to perform on the ODT server." ,required=true )  @Valid @RequestBody ODTActionSequence odTActionSequence,@ApiParam(value = "Parameter to be identify the current middle layer session " ) @RequestHeader(value="X-Session-Identifier", required=false) String xSessionIdentifier) {
@@ -40,7 +41,10 @@ public class OdtActionsApiController implements OdtActionsApi {
             return new ResponseEntity(new ODTSateResponse(), HttpStatus.FORBIDDEN);
         }
         try {
-            new ODTClient();
+
+
+
+            /*new ODTClient();
             int hash = odTActionSequence.getActions().hashCode();
 
             BufferedReader br = null;
@@ -60,15 +64,18 @@ public class OdtActionsApiController implements OdtActionsApi {
                 ex.printStackTrace();
             }finally {
                 if(br != null) br.close();
+            }*/
+            ODTClient odt = odts.get(xSessionIdentifier);
+            if(odt == null) {
+                odt = new ODTClient();
+                odts.put(xSessionIdentifier, odt);
             }
-
-            /*
-            Context context = ODTComponentFactory.getContext();
+            Context context = odt.init();
             context.runActions(odTActionSequence.getActions());
             String state = context.getState();
             FileWriter writer = null;
             try {
-                writer = new FileWriter("/workspaces/ActionTest/odt-headless/mock/"+hash);
+                writer = new FileWriter("/home/vscode/test/"+xSessionIdentifier);
                 writer.write(state);
             }catch(Exception ex) {
                 ex.printStackTrace();
@@ -77,7 +84,7 @@ public class OdtActionsApiController implements OdtActionsApi {
             }
             getRequest().ifPresent(request -> {
                 ApiUtil.setExampleResponse(request, "application/json", state);
-            });*/
+            });
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

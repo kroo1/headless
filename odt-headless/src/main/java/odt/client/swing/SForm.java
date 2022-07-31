@@ -2,10 +2,11 @@ package odt.client.swing;
 
 import odt.client.Context;
 import odt.client.IComponent;
-import odt.client.IContainer;
 import odt.client.IDialog;
 import odt.client.IForm;
 import odt.client.ODTComponentFactory;
+import odt.client.model.ODTField;
+import odt.client.widget.ADialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,12 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.Map;
 
-public class SForm extends JPanel implements IForm, IComponent, IContainer {
+public class SForm extends JPanel implements IForm {
+
+    @Override
+    public IComponent getIComponentImpl() {
+        return this;
+    }
 
     private Context context = ODTComponentFactory.getContext();
 
@@ -24,8 +30,13 @@ public class SForm extends JPanel implements IForm, IComponent, IContainer {
         this.wrapper = wrapper;
     }
 
-    @Override
+    /*@Override
     public String persist() {
+        return wrapper.persist();
+    }*/
+
+    @Override
+    public ODTField persist() {
         return wrapper.persist();
     }
 
@@ -86,7 +97,7 @@ public class SForm extends JPanel implements IForm, IComponent, IContainer {
     @Override
     public int showConfirmDialog(String title, int optionType, int messageType) {
         JOptionPane opane = new JOptionPane(this, optionType, messageType);
-        dialog = new IDialog() {
+        dialog = new ADialog() {
             IComponent form = wrapper;
             JOptionPane orig = opane;
             @Override

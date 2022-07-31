@@ -1,15 +1,14 @@
 package odt.client;
 
-import java.util.Map;
+public interface IForm extends IContainer {
 
-public interface IForm {
-    String getName();
-    void setSate(Map<String, Object> state);
-    int showConfirmDialog(String dialog, int okCancelOption, int plainMessage);
-    Object getOrig();
-    void add(IComponent b);
-    IComponent[] getFields();
-    void setName(String testForm);
-    void setBounds(int x, int y, int w, int h);
-    String getODTState();
+    default int showConfirmDialog(String dialog, int okCancelOption, int plainMessage){
+        return ((IForm)getIComponentImpl()).showConfirmDialog(dialog, okCancelOption, plainMessage);
+    }
+
+    default void add(IComponent comp){
+        ((IForm)getIComponentImpl()).add(comp);
+    }
+
+    
 }

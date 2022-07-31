@@ -3,12 +3,18 @@ package odt.client.headless;
 import odt.client.Context;
 import odt.client.IComponent;
 import odt.client.ODTComponentFactory;
+import odt.client.model.ODTField;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
 public abstract class AComponent implements IComponent {
+
+    @Override
+    public IComponent getIComponentImpl() {
+        return this;
+    }
 
     protected Context context = ODTComponentFactory.getContext();
 
@@ -23,7 +29,11 @@ public abstract class AComponent implements IComponent {
         setName(s);
     }
 
-    public String persist() {
+    /*public String persist() {
+        return wrapper.persist();
+    }*/
+
+    public ODTField persist() {
         return wrapper.persist();
     }
 
@@ -120,6 +130,10 @@ public abstract class AComponent implements IComponent {
 
     public void setFormId(String name) {
         wrapper.setFormId(name);
+    }
+
+    public String getFormId(){
+        return wrapper.getFormId();
     }
 
     public void setSize(int w, int h) {}

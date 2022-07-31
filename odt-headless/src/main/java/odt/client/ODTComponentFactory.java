@@ -78,6 +78,10 @@ public class ODTComponentFactory {
     private static ThreadLocal<Context> hcontext;
 
     public static Context getContext() {
+        return getContext(null);
+    }
+
+    public static Context getContext(Context csaved) {
         if(SWING_MODE) {
             if(context == null) {
                 context = new Context();
@@ -87,6 +91,9 @@ public class ODTComponentFactory {
         }else {
             if(hcontext == null) {
                 hcontext = new ThreadLocal<>();
+            }
+            if(csaved != null) {
+                hcontext.set(csaved);
             }
             Context c = hcontext.get();
             if(c == null) {

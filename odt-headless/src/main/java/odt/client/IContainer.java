@@ -1,7 +1,9 @@
 package odt.client;
 
-public interface IContainer {
-    IComponent[] getFields();
+public interface IContainer extends IComponent {
+    
+    default IComponent[] getFields() {
+        return ((IContainer)getIComponentImpl()).getFields();
+    }
 
-    Object getOrig();
 }

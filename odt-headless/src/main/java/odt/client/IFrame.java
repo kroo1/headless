@@ -1,16 +1,25 @@
 package odt.client;
 
-public interface IFrame {
+import odt.client.tester.IRootContainer;
+
+public interface IFrame extends IRootContainer {
+
     void setContentPane(IContainer form);
 
-    void setSize(int i, int i1);
 
-    void setLayout(Object o);
+    default void setSize(int x, int y){
+        ((IFrame)getIComponentImpl()).setSize(x, y);
+    }
 
-    void setVisible(boolean b);
 
-    IComponent[] getFields();
+    default void setLayout(Object obj){
+        ((IFrame)getIComponentImpl()).setLayout(obj);
+    }
 
-    void seBounds(int x, int y, int w, int h);
+
+    default void seBounds(int x, int y, int w, int h){
+        ((IFrame)getIComponentImpl()).seBounds(x, y, w, h);
+    }
+
 
 }

@@ -8,7 +8,7 @@ import odt.client.tester.IRootContainer;
 
 import java.util.HashMap;
 
-public class HFrame extends AComponent implements IFrame, IRootContainer {
+public class HFrame extends AComponent implements IFrame {
     public HFrame(IComponent wrapper) {
         super(wrapper);
     }

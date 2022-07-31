@@ -4,13 +4,19 @@ import odt.client.Context;
 import odt.client.IComboBox;
 import odt.client.IComponent;
 import odt.client.ODTComponentFactory;
+import odt.client.model.ODTField;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.util.EventListener;
 import java.util.Map;
 
-public class SComboBox extends JComboBox implements IComboBox, IComponent {
+public class SComboBox extends JComboBox implements IComboBox {
+
+    @Override
+    public IComponent getIComponentImpl() {
+        return this;
+    }
 
     private Context context = ODTComponentFactory.getContext();
 
@@ -26,10 +32,16 @@ public class SComboBox extends JComboBox implements IComboBox, IComponent {
         this.wrapper = wrapper;
     }
 
-    @Override
+    /*@Override
     public String persist() {
         return wrapper.persist();
+    }*/
+
+    @Override
+    public ODTField persist() {
+        return wrapper.persist();
     }
+
 
     @Override
     public void setSate(Map iState) {
@@ -88,4 +100,10 @@ public class SComboBox extends JComboBox implements IComboBox, IComponent {
     public void setFormId(String name) {
         wrapper.setFormId(name);
     }
+
+    @Override
+    public String getFormId(){
+        return wrapper.getFormId();
+    }
+
 }

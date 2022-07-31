@@ -2,12 +2,18 @@ package odt.client.swing;
 
 import odt.client.IButton;
 import odt.client.IComponent;
+import odt.client.model.ODTField;
 
 import javax.swing.*;
 import java.util.EventListener;
 import java.util.Map;
 
-public class SButton extends JButton implements IComponent, IButton {
+public class SButton extends JButton implements IButton {
+
+    @Override
+    public IComponent getIComponentImpl() {
+        return this;
+    }
 
     private IComponent wrapper;
 
@@ -16,8 +22,13 @@ public class SButton extends JButton implements IComponent, IButton {
         this.wrapper = wrapper;
     }
 
-    @Override
+    /*@Override
     public String persist() {
+        return wrapper.persist();
+    }*/
+
+    @Override
+    public ODTField persist() {
         return wrapper.persist();
     }
 
@@ -54,6 +65,9 @@ public class SButton extends JButton implements IComponent, IButton {
     public void setFormId(String name) {
         wrapper.setFormId(name);
     }
-
+    @Override
+    public String getFormId(){
+        return wrapper.getFormId();
+    }
 
 }
