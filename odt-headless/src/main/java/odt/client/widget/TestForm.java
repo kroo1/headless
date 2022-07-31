@@ -2,8 +2,11 @@ package odt.client.widget;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.openapitools.jackson.nullable.JsonNullableModule;
 
 import odt.client.*;
 import odt.client.model.ODTSateResponse;
@@ -30,6 +33,8 @@ public class TestForm  extends AComponent implements IForm {
         }
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        mapper.registerModule(new JsonNullableModule());
         try {
             return mapper.writeValueAsString(resp);
         } catch (JsonProcessingException e) {
