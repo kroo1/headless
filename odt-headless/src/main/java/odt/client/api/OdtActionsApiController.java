@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import io.swagger.annotations.ApiParam;
-import odt.client.Context;
 import odt.client.ODTClient;
 import odt.client.model.ODTActionSequence;
 import odt.client.model.ODTSateResponse;
+import odt.context.Context;
 
 @RestController
 public class OdtActionsApiController implements OdtActionsApi {

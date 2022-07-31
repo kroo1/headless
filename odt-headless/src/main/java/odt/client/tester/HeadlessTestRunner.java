@@ -2,8 +2,8 @@ package odt.client.tester;
 
 import java.util.List;
 
-import odt.client.Context;
-import odt.client.ODTComponentFactory;
+import odt.context.Context;
+import odt.context.ODTComponentFactory;
 
 public class HeadlessTestRunner implements IRunner {
 

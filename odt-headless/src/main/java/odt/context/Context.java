@@ -1,10 +1,12 @@
-package odt.client;
+package odt.context;
 
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.event.DocumentListener;
 
+import odt.client.IComponent;
+import odt.client.IDialog;
 import odt.client.tester.IRootContainer;
 import odt.client.tester.ODTesterMain;
 

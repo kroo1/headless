@@ -2,6 +2,8 @@ package odt.client;
 
 import odt.client.widget.ActionPanel;
 import odt.client.widget.TestFrame;
+import odt.context.Context;
+import odt.context.ODTComponentFactory;
 
 public class ODTClient {
 

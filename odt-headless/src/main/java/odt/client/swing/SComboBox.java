@@ -1,10 +1,10 @@
 package odt.client.swing;
 
-import odt.client.Context;
 import odt.client.IComboBox;
 import odt.client.IComponent;
-import odt.client.ODTComponentFactory;
 import odt.client.model.ODTField;
+import odt.context.Context;
+import odt.context.ODTComponentFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

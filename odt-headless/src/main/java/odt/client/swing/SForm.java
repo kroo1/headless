@@ -1,12 +1,12 @@
 package odt.client.swing;
 
-import odt.client.Context;
 import odt.client.IComponent;
 import odt.client.IDialog;
 import odt.client.IForm;
-import odt.client.ODTComponentFactory;
 import odt.client.model.ODTField;
 import odt.client.widget.ADialog;
+import odt.context.Context;
+import odt.context.ODTComponentFactory;
 
 import javax.swing.*;
 import java.awt.*;

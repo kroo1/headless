@@ -1,9 +1,9 @@
 package odt.client.headless;
 
-import odt.client.Context;
 import odt.client.IComponent;
-import odt.client.ODTComponentFactory;
 import odt.client.model.ODTField;
+import odt.context.Context;
+import odt.context.ODTComponentFactory;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

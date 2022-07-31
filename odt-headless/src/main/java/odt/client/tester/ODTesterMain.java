@@ -2,11 +2,11 @@ package odt.client.tester;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import odt.client.Context;
 import odt.client.IComponent;
 import odt.client.IDialog;
 import odt.client.IForm;
-import odt.client.ODTComponentFactory;
+import odt.context.Context;
+import odt.context.ODTComponentFactory;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

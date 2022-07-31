@@ -1,7 +1,13 @@
-package odt.client;
+package odt.context;
 
 import java.util.List;
 
+import odt.client.IButton;
+import odt.client.IComboBox;
+import odt.client.IComponent;
+import odt.client.IForm;
+import odt.client.IFrame;
+import odt.client.ITextField;
 import odt.client.headless.*;
 import odt.client.swing.*;
 import odt.client.tester.HeadlessTestRunner;

@@ -5,8 +5,8 @@ import java.util.Map;
 import java.awt.event.ActionListener;
 
 import odt.client.IButton;
-import odt.client.ODTComponentFactory;
 import odt.client.model.ODTField;
+import odt.context.ODTComponentFactory;
 
 public class TestButton extends AComponent implements IButton {
 
@@ -16,21 +16,6 @@ public class TestButton extends AComponent implements IButton {
         buttonImpl = ODTComponentFactory.createButton(s, this);
         impl = buttonImpl;
     }
-
-    /*@Override
-    public String persist() {
-        StringBuffer json  = new StringBuffer();
-
-        json.append("\"");json.append(getName());json.append("\":");json.append("{");
-
-        json.append("\"enable\":");json.append(buttonImpl.isEnabled());json.append(",");
-        json.append("\"selected\":");json.append(buttonImpl.isSelected());json.append(",");
-        json.append("\"visible\":");json.append(buttonImpl.isVisible());
-
-        json.append("}");
-
-        return json.toString();
-    }*/
 
     @Override
     public ODTField persist() {

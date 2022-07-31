@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.swing.event.DocumentListener;
 
 import odt.client.ITextField;
-import odt.client.ODTComponentFactory;
 import odt.client.model.ODTField;
+import odt.context.ODTComponentFactory;
 
 public class TestTextField extends AComponent implements ITextField {
 
@@ -17,21 +17,6 @@ public class TestTextField extends AComponent implements ITextField {
         impl = ODTComponentFactory.createTextField(this);
         super.impl = impl;
     }
-
-    /*@Override
-    public String persist() {
-        StringBuffer json  = new StringBuffer();
-
-        json.append("\"");json.append(getName());json.append("\":");json.append("{");
-
-        json.append("\"enable\":");json.append(impl.isEnabled());json.append(",");
-        json.append("\"visible\":");json.append(impl.isVisible());json.append(",");
-        json.append("\"value\":\"");json.append(impl.getText());
-
-        json.append("\"}");
-
-        return json.toString();
-    }*/
 
     @Override
     public ODTField persist() {

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import odt.client.IComboBox;
-import odt.client.ODTComponentFactory;
 import odt.client.model.ODTField;
+import odt.context.ODTComponentFactory;
 
 public class TestComboBox extends AComponent implements IComboBox {
 
@@ -21,32 +21,6 @@ public class TestComboBox extends AComponent implements IComboBox {
         impl = ODTComponentFactory.createComboBox(list, this);
         super.impl = impl;
     }
-
-    /*@Override
-    public String persist() {
-        StringBuffer json  = new StringBuffer();
-
-        json.append("\"");json.append(getName());json.append("\":");json.append("{");
-
-        json.append("\"enable\":");json.append(impl.isEnabled());json.append(",");
-        //json.append("\"focused\":");json.append(hasFocus());json.append(",");
-        json.append("\"visible\":");json.append(impl.isVisible());json.append(",");
-        json.append("\"selectedIdx\":");json.append(impl.getSelectedIndex());json.append(",");
-        json.append("\"selectedItem\":");json.append("\"");json.append(impl.getSelectedItem());json.append("\"");json.append(",");
-        json.append("\"selectableItems\":");json.append("[");
-        int itemCount = impl.getItemCount();
-        for (int i = 0; i < itemCount; i++) {
-            if(i > 0) {
-                json.append(",");
-            }
-            json.append("\"");json.append(impl.getElementAt(i));json.append("\"");
-        }
-        json.append("]");
-
-        json.append("}");
-
-        return json.toString();
-    }*/
 
     @Override
     public ODTField persist() {

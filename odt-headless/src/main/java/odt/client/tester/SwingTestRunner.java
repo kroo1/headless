@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
-import odt.client.Context;
-import odt.client.ODTComponentFactory;
+import odt.context.Context;
+import odt.context.ODTComponentFactory;
 
 public class SwingTestRunner extends SwingWorker<List<String>, String> implements IRunner {
 

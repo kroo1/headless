@@ -2,9 +2,9 @@ package odt.client.widget;
 
 import java.awt.event.ActionListener;
 
-import odt.client.Context;
 import odt.client.IComponent;
-import odt.client.ODTComponentFactory;
+import odt.context.Context;
+import odt.context.ODTComponentFactory;
 
 public abstract class AComponent implements IComponent {
 

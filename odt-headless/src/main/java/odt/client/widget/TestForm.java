@@ -6,8 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import odt.client.*;
-import odt.client.ODTComponentFactory;
 import odt.client.model.ODTSateResponse;
+import odt.context.ODTComponentFactory;
 
 public class TestForm  extends AComponent implements IForm {
 
@@ -36,29 +36,6 @@ public class TestForm  extends AComponent implements IForm {
             e.printStackTrace();
             return "{}";
         }
-        /*StringBuilder json = new StringBuilder();
-        try {
-            json.append("{");
-            boolean append = false;
-            IComponent[] cmps = formImpl.getFields();
-            int cmpc = cmps != null ? cmps.length : 0;
-            for (int idx = 0; idx < cmpc; idx++) {
-                IComponent cmp = cmps[idx];
-                if (append) {
-                    json.append(",");
-                }
-                json.append(cmp.persist());
-                append = true;
-            }
-
-            json.append("}");
-
-            //System.out.println("ODT_JSON:" + json.toString());
-            return json.toString();
-        }catch(Exception ex) {
-            ex.printStackTrace();
-            return "{}";
-        }*/
     }
 
     @Override

@@ -3,6 +3,7 @@ package odt.client.widget;
 import java.util.HashMap;
 
 import odt.client.*;
+import odt.context.ODTComponentFactory;
 
 public class TestFrame extends AComponent implements IFrame {
 

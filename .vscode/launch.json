@@ -10,8 +10,7 @@
             "request": "launch",
             "mainClass": "ActionTestMain",
             "projectName": "odt-headless",
-            //"vmArgs": "-Dsun.boot.library.path=/workspaces/ActionTest/ghostawt/linux64:/usr/lib/jvm/msopenjdk-11/lib -Dawt.toolkit=ghostawt.GhostToolkit -Djava.awt.graphicsenv=ghostawt.image.GhostGraphicsEnvironment -Djava.awt.headless=false -Dsun.font.fontmanager=ghostawt.sun.GFontManager"
-
+            "vmArgs": "-Djava.awt.headless=false"
         }
     ]
 }

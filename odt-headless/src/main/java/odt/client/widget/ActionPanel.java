@@ -1,5 +1,7 @@
 package odt.client.widget;
 import odt.client.*;
+import odt.context.Context;
+import odt.context.ODTComponentFactory;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
