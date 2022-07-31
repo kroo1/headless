@@ -1,0 +1,6 @@
+POST http://localhost:8080/odt-actions HTTP/1.1
+content-type: application/json;charset=UTF-8
+accept: application/json
+X-Session-Identifier: 1xxx-xxxx-xxxx-xxxx
+
+{"actions":"TestFrame1,btnClick\nTestFrame1,btnClick\nTestFrame1,select,3\nTestFrame1,dialog\nDIALOG_OPEN\nTestFrame2,select,2\nTestFrame2,counter,\nTestFrame2,counter,3\nTestFrame2,btnClick"}

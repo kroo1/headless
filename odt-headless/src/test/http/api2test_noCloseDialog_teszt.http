@@ -1,0 +1,18 @@
+POST http://localhost:8080/odt-actions-test HTTP/1.1
+content-type: application/json;charset=UTF-8
+accept: application/json
+X-Session-Identifier: 1xxx-xxxx-xxxx-xxxx
+
+{
+    "actions":[
+        "TestFrame1,btnClick",
+        "TestFrame1,btnClick",
+        "TestFrame1,select,3",
+        "TestFrame1,dialog",
+        "DIALOG_OPEN",
+        "TestFrame2,select,2",
+        "TestFrame2,counter,",
+        "TestFrame2,counter,3",
+        "TestFrame2,btnClick"
+    ]
+}

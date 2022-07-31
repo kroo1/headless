@@ -1,5 +1,0 @@
-POST http://localhost:8080/odt-actions HTTP/1.1
-content-type: application/json;charset=UTF-8
-accept: application/json
-
-{"actions":"TestFrame1_btnClick\nTestFrame1_btnClick\nTestFrame1_select,3\nTestFrame1_dialog\nDIALOG_OPEN\nTestFrame2_select,2\nTestFrame2_counter,\nTestFrame2_counter,3\nTestFrame2_btnClick"}
