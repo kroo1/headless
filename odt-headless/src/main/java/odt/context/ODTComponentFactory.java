@@ -68,7 +68,8 @@ public class ODTComponentFactory {
 
     public static IRunner createRunner(List<String> lines) {
         if(SWING_MODE) {
-            return new SwingRunner(lines);
+            //return new SwingRunner(lines);
+            return new HeadlessRunner(lines);
         }else {
             return new HeadlessRunner(lines);
         }

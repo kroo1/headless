@@ -10,6 +10,7 @@ import odt.context.ODTComponentFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Dialog.ModalityType;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.List;
@@ -122,11 +123,13 @@ public class SForm extends JPanel implements IForm {
         };
         context.dialogStart(dialog);
         JDialog jDialog = opane.createDialog(title);
+        jDialog.setModalityType(ModalityType.MODELESS);
         jDialog.setVisible(true);
-        dialog.closeConfirmDialog();
+        //dialog.closeConfirmDialog();
         //int resp = JOptionPane.showConfirmDialog(dialog, this, title, optionType, messageType);
         return dialogResp;
     }
+
 
     @Override
     public void setFormId(String name) {

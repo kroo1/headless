@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ODTRunnerHelper {
 
@@ -362,10 +363,10 @@ public class ODTRunnerHelper {
         String[] res = line.split(",");
         if(DIALOG_CLOSE.equals(res[0])) {
             IDialog opane = dialogs.pop();
-            if(!ODTComponentFactory.SWING_MODE) {
+            //if(!ODTComponentFactory.SWING_MODE) {
                 opane.setValue(res[1]);
                 opane.closeConfirmDialog();
-            }
+            //}
             //addAction(DIALOG_CLOSE, res[1]);
             opane.setValue(res[1]);
         }else {
@@ -391,7 +392,14 @@ public class ODTRunnerHelper {
 
     private Stack<IDialog> dialogs = new Stack<>();
 
-    private List<IRunner> tasks = new ArrayList<>();
+    private List<IRunner> tasks = new CopyOnWriteArrayList<>();
+
+    public boolean hasMoreTask() {
+        if(tasks != null) {
+            return tasks.size() > 0;
+        }
+        return false;
+    }
 
     private void firePopupOpenClose() {
         if(tasks == null || tasks.size() == 0) return;
