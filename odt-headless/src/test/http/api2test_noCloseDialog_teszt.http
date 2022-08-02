@@ -5,14 +5,14 @@ X-Session-Identifier: 1xxx-xxxx-xxxx-xxxx
 
 {
     "actions":[
-        "TestFrame1,btnClick",
-        "TestFrame1,btnClick",
-        "TestFrame1,select,3",
-        "TestFrame1,dialog",
+        "TestForm1,btnClick",
+        "TestForm1,btnClick",
+        "TestForm1,select,3",
+        "TestForm1,dialog",
         "DIALOG_OPEN",
-        "TestFrame2,select,2",
-        "TestFrame2,counter,",
-        "TestFrame2,counter,3",
-        "TestFrame2,btnClick"
+        "TestForm2,select,2",
+        "TestForm2,counter,",
+        "TestForm2,counter,3",
+        "TestForm2,btnClick"
     ]
 }
