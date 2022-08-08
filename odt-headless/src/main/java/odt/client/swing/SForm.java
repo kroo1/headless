@@ -116,6 +116,7 @@ public class SForm extends JPanel implements IForm {
 
             public void closeConfirmDialog() {
                 dialogResp = Integer.parseInt(opane.getValue().toString());
+                orig.setVisible(false);
                 context.dialogEnd(dialog, dialogResp);
                 dialog = null;
                 dialogResp = -1;

@@ -12,7 +12,6 @@ import odt.client.headless.*;
 import odt.client.swing.*;
 import odt.runner.HeadlessRunner;
 import odt.runner.IRunner;
-import odt.runner.SwingRunner;
 
 public class ODTComponentFactory {
 

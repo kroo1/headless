@@ -39,6 +39,7 @@ public class HForm extends AComponent implements IForm {
 
             public void closeConfirmDialog() {
                 dialogResp = Integer.parseInt(dialog.getValue().toString());
+                form.setVisible(false);
                 context.dialogEnd(dialog, dialogResp);
                 dialog = null;
                 dialogResp = -1;

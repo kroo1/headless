@@ -70,11 +70,7 @@ public class ActionPanel implements ActionListener, DocumentListener {
         r.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    context.runTest();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+                context.runTest();
             }
         });
 

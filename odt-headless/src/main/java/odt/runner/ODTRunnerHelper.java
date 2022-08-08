@@ -8,8 +8,6 @@ import odt.client.IForm;
 import odt.context.Context;
 import odt.context.ODTComponentFactory;
 
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.AWTEvent;
@@ -18,13 +16,10 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -41,122 +36,40 @@ public class ODTRunnerHelper {
         this.context = context;
     }
 
-    private String DIR_NAME;
-    private String LOAD_DIR_PATH;
-    private String DIR_PATH;
-    private String ACTION_PATH;
+    private IRunnerMode stateHelper = null;
+
+    public void setRunnerMode(IRunnerMode stateHelper) {
+        this.stateHelper = stateHelper;
+    }
+
     private Object event = null;
     private StringBuffer actions = new StringBuffer();
     private int action_counter = 0;
     private boolean loading = false;
 
-    private void createDir() {
-        if(DIR_PATH == null) {
-            DIR_NAME = "ODTest_" + (new SimpleDateFormat("YYYYMMdd_HHMMSS").format(new Date()));
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Válasszon könyvtárat!");
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-            int userSelection = fileChooser.showSaveDialog(new JFrame());
-
-            if (userSelection == JFileChooser.APPROVE_OPTION) {
-                File fileToSave = fileChooser.getSelectedFile();
-                File dir = new File(fileToSave.getAbsolutePath() + "/" + DIR_NAME);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                    DIR_PATH = dir.getAbsolutePath();
-                }
-            }
-        }
+    public void reset() {
+        event = null;
+        actions = new StringBuffer();
+        action_counter = 0;
+        stateHelper.reset();
     }
 
-    private void loadDir() {
-        if(LOAD_DIR_PATH == null) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Válasszon könyvtárat!");
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-            int userSelection = fileChooser.showOpenDialog(new JFrame());
-
-            if (userSelection == JFileChooser.APPROVE_OPTION) {
-                loadDirH(fileChooser.getSelectedFile());
-            }
-        }
+    public void runTest() throws IOException {
+        reset();
+        loading = true;
+        setState(stateHelper.loadState0());
+        loading = false;
+        saveFormsState();
+        runActions(stateHelper.loadActions());
     }
 
-    private void loadDirH(File fileToSave) {
-        String time = (new SimpleDateFormat("YYYYMMdd_HHMMSS").format(new Date()));
-        LOAD_DIR_PATH = fileToSave.getAbsolutePath();
-        String lDirName = "Result_" + fileToSave.getName() + "_" + time;
-        File dir = new File(fileToSave.getParentFile().getAbsolutePath() + "/" + lDirName);
-        if (!dir.exists()) {
-            dir.mkdirs();
-            DIR_PATH = dir.getAbsolutePath();
-        }
-    }
-
-    private void loadState0() throws IOException {
-        StringBuilder res = new StringBuilder();
-        File state0 = new File(LOAD_DIR_PATH + "/" + "state_0");
-        if (state0.exists()) {
-            BufferedReader br = null;
-            try {
-                FileReader reader = new FileReader(state0);
-                br = new BufferedReader(reader);
-                String line;
-                while((line = br.readLine())!=null) {
-                    res.append(line).append("\n");
-                }
-                setState(res.toString());
-            }finally {
-                if(br != null) br.close();
-            }
-        }else {
-            System.out.println("No state0: " + state0.getAbsolutePath());
-        }
-    }
-
-    private void saveFormsState() {
-        createDir();
-        if(DIR_PATH != null) {
-            try {
-                File stateFile = new File(DIR_PATH + "/state_"+action_counter);
-                if (!stateFile.exists()) {
-                    stateFile.createNewFile();
-                    FileWriter writer = new FileWriter(stateFile);
-                    writer.write(getState());
-                    writer.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public String getState() {
-        if(context.ROOT != null) {
-            StringBuffer json = new StringBuffer();
-            Collection<IForm> forms = context.ROOT.getForms().values();
-            boolean append = false;
-            json.append("{");
-            Iterator<IForm> it = forms.iterator();
-            while (it.hasNext()) {
-                IForm form = it.next();
-                if (append) {
-                    json.append(",");
-                }
-                json.append("\"");json.append(form.getName());json.append("\":");
-                json.append(form.getODTState());
-                append = true;
-            }
-            json.append("}");
-            return json.toString();
-        }
-        return null;
+    public void startTest() {
+        reset();
+        saveFormsState();
     }
 
     private void setState(String pState) {
-        if(context.ROOT != null) {
+        if(pState != null && context.ROOT != null) {
             try {
                 ObjectMapper mapper = new ObjectMapper();
                 Map map = mapper.readValue(pState, Map.class);
@@ -174,28 +87,14 @@ public class ODTRunnerHelper {
         }
     }
 
+    private void saveFormsState() {
+        stateHelper.saveState(getState(), action_counter);
+    }
+
     private void saveAction() {
-        if(context.NOTEST || DIR_PATH == null) return;
-        if(ACTION_PATH == null) {
-            try {
-                File actionsFile = new File(DIR_PATH + "/actions");
-                if (!actionsFile.exists()) {
-                    actionsFile.createNewFile();
-                    ACTION_PATH = actionsFile.getAbsolutePath();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         action_counter++;
         saveFormsState();
-        try {
-            FileWriter writer = new FileWriter(ACTION_PATH);
-            writer.write(actions.toString());
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        stateHelper.saveActions(actions.toString());
     }
 
     public boolean testActionStart(Object e, IComponent c) {
@@ -221,6 +120,12 @@ public class ODTRunnerHelper {
         return true;
     }
 
+    public void testActionEnd(Object e) {
+        if(event == e) {
+            event = null;
+        }
+    }
+
     private void addAction(String formId, String action, String value) {
         if(formId != null) {
             actions.append(formId + ",");
@@ -233,113 +138,59 @@ public class ODTRunnerHelper {
         saveAction();
     }
 
-    public void testActionEnd(Object e) {
-        if(event == e) {
-            event = null;
+    public String getState() {
+        if(context.ROOT != null) {
+            StringBuffer json = new StringBuffer();
+            Collection<IForm> forms = context.ROOT.getForms().values();
+            boolean append = false;
+            json.append("{");
+            Iterator<IForm> it = forms.iterator();
+            while (it.hasNext()) {
+                IForm form = it.next();
+                if (append) {
+                    json.append(",");
+                }
+                json.append("\"");json.append(form.getName());json.append("\":");
+                json.append(form.getODTState());
+                append = true;
+            }
+            json.append("}");
+            return json.toString();
         }
+        return null;
     }
 
-    public void startTest() {
-        reset();
-        saveFormsState();
-    }
-
-    public void runTest() throws IOException {
-        runTest(null);
-    }
-
-    public void runTest(File fileToSave) throws IOException {
-        reset();
-        loading = true;
-        if(fileToSave == null) {
-            loadDir();
-        }else {
-            loadDirH(fileToSave);
-        }
-        if(LOAD_DIR_PATH != null) {
-            loadState0();
-            loading = false;
-            saveFormsState();
-            runActions();
+    private void runActions(BufferedReader br) throws IOException {
+        if (br != null) {
+            List<String> lines = new ArrayList<>();
+            String line;
+            while((line = br.readLine())!=null) {
+                lines.add(line);
+            }
+            runActions((String[])lines.toArray(new String[lines.size()]));
         }
     }
 
     public void runActions(String actions) throws IOException {
-        List<String> lines = new ArrayList<>();
         if (actions != null) {
-            BufferedReader br = null;
+            StringReader reader = new StringReader(actions);
+            BufferedReader br = new BufferedReader(reader);
             try {
-                StringReader reader = new StringReader(actions);
-                br = new BufferedReader(reader);
-                String line;
-                IRunner first = null;
-                while((line = br.readLine())!=null) {
-                    if(DIALOG_OPEN.equals(line)) {
-                        IRunner task = ODTComponentFactory.createRunner(lines);
-                        if(first == null) {
-                            first = task;
-                        }else {
-                            tasks.add(task);
-                        }
-                        lines = new ArrayList<>();
-                    }else if(line.startsWith(DIALOG_CLOSE)) {
-                        lines.add(line);
-                        IRunner task = ODTComponentFactory.createRunner(lines);
-                        tasks.add(task);
-                        lines = new ArrayList<>();
-                    }else {
-                        lines.add(line);
-                    }
-                }
-                if(lines.size() > 0) {
-                    IRunner task = ODTComponentFactory.createRunner(lines);
-                    if(first == null) {
-                        first = task;
-                    }else {
-                        tasks.add(task);
-                    }
-                    lines = new ArrayList<>();
-                }
-                if (first != null) {
-                    first.exec();
-                }
-            } finally {
-                if(br != null) br.close();
+                runActions(br);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                br.close();
             }
-        }else {
-            System.out.println("No actions!");
         }
     }
 
-    private void runActions() throws IOException {
-        File actions = new File(LOAD_DIR_PATH + "/" + "actions");
+    public void runActions(String[] actions) throws IOException {
         List<String> lines = new ArrayList<>();
-        if (actions.exists()) {
-            BufferedReader br = null;
-            try {
-                FileReader reader = new FileReader(actions);
-                br = new BufferedReader(reader);
-                String line;
-                IRunner first = null;
-                while((line = br.readLine())!=null) {
-                    if(DIALOG_OPEN.equals(line)) {
-                        IRunner task = ODTComponentFactory.createRunner(lines);
-                        if(first == null) {
-                            first = task;
-                        }else {
-                            tasks.add(task);
-                        }
-                        lines = new ArrayList<>();
-                    }else if(line.startsWith(DIALOG_CLOSE)) {
-                        lines.add(line);
-                        IRunner task = ODTComponentFactory.createRunner(lines);
-                        tasks.add(task);
-                        lines = new ArrayList<>();
-                    }else {
-                        lines.add(line);
-                    }
-                }
-                if(lines.size() > 0) {
+        if (actions != null) {
+            IRunner first = null;
+            for (String line : actions) {
+                if(DIALOG_OPEN.equals(line)) {
                     IRunner task = ODTComponentFactory.createRunner(lines);
                     if(first == null) {
                         first = task;
@@ -347,15 +198,29 @@ public class ODTRunnerHelper {
                         tasks.add(task);
                     }
                     lines = new ArrayList<>();
+                }else if(line.startsWith(DIALOG_CLOSE)) {
+                    lines.add(line);
+                    IRunner task = ODTComponentFactory.createRunner(lines);
+                    tasks.add(task);
+                    lines = new ArrayList<>();
+                }else {
+                    lines.add(line);
                 }
-                if (first != null) {
-                    first.exec();
+            }
+            if(lines.size() > 0) {
+                IRunner task = ODTComponentFactory.createRunner(lines);
+                if(first == null) {
+                    first = task;
+                }else {
+                    tasks.add(task);
                 }
-            } finally {
-                if(br != null) br.close();
+                lines = new ArrayList<>();
+            }
+            if (first != null) {
+                first.exec();
             }
         }else {
-            System.out.println("No actions: " + actions.getAbsolutePath());
+            System.out.println("No actions!");
         }
     }
 
@@ -363,11 +228,8 @@ public class ODTRunnerHelper {
         String[] res = line.split(",");
         if(DIALOG_CLOSE.equals(res[0])) {
             IDialog opane = dialogs.pop();
-            //if(!ODTComponentFactory.SWING_MODE) {
-                opane.setValue(res[1]);
-                opane.closeConfirmDialog();
-            //}
-            //addAction(DIALOG_CLOSE, res[1]);
+            opane.setValue(res[1]);
+            opane.closeConfirmDialog();
             opane.setValue(res[1]);
         }else {
             ActionItems actionItems = actionMap.get(res[0]+"."+res[1]);
@@ -375,31 +237,14 @@ public class ODTRunnerHelper {
         }
     }
 
-    public void reset() {
-        DIR_NAME = null;
-        LOAD_DIR_PATH = null;
-        DIR_PATH = null;
-        ACTION_PATH = null;
-        event = null;
-        actions = new StringBuffer();
-        action_counter = 0;
-        loading = false;
-    }
-
-    public void main(String[] args) {
-
-    }
+    //Dialog
 
     private Stack<IDialog> dialogs = new Stack<>();
 
     private List<IRunner> tasks = new CopyOnWriteArrayList<>();
 
-    public boolean hasMoreTask() {
-        if(tasks != null) {
-            return tasks.size() > 0;
-        }
-        return false;
-    }
+    private final String DIALOG_OPEN = "DIALOG_OPEN";
+    private final String DIALOG_CLOSE = "DIALOG_CLOSE";
 
     private void firePopupOpenClose() {
         if(tasks == null || tasks.size() == 0) return;
@@ -413,18 +258,17 @@ public class ODTRunnerHelper {
         context.ROOT.addForm(dialog.getForm());
         dialogs.push(dialog);
         event = null;
-        firePopupOpenClose();
         addAction(null, DIALOG_OPEN, null);
+        firePopupOpenClose();
     }
-
-    private final String DIALOG_OPEN = "DIALOG_OPEN";
-    private final String DIALOG_CLOSE = "DIALOG_CLOSE";
 
     public void dialogEnd(IDialog dialog, int closeAction) {
         context.ROOT.removeForm(dialog.getForm());
         firePopupOpenClose();
         addAction(null, DIALOG_CLOSE, Integer.toString(closeAction));
     }
+
+    //Action
 
     private class ActionItems {
         private final IComponent c;
@@ -438,8 +282,8 @@ public class ODTRunnerHelper {
     private HashMap<String, ActionItems> actionMap = new HashMap<>();
 
     public ActionListener getActionListener(IComponent c, ActionListener l) {
-        if(l instanceof ListenerAdapter) return l;
-        if(context.TEST_MODE && c.getFormId() != null && c.getName() != null) {
+        if(stateHelper == null || l instanceof ListenerAdapter) return l;
+        if(c.getFormId() != null && c.getName() != null) {
             ListenerAdapter la = new ListenerAdapter(l, null, null);
             ActionItems newV = new ActionItems(c, la);
             ActionItems oldV = actionMap.replace(c.getFormId()+"."+c.getName(), newV);
@@ -452,7 +296,8 @@ public class ODTRunnerHelper {
     }
 
     public DocumentListener getDocumentListener(IComponent c, DocumentListener l) {
-        if(context.TEST_MODE && c.getFormId() != null && c.getName() != null) {
+        if(stateHelper == null || l instanceof ListenerAdapter) return l;
+        if(c.getFormId() != null && c.getName() != null) {
             ListenerAdapter la = new ListenerAdapter(null, l, c);
             ActionItems newV =new ActionItems(c, la);
             ActionItems oldV = actionMap.replace(c.getFormId()+"."+c.getName(), newV);
@@ -508,7 +353,6 @@ public class ODTRunnerHelper {
             testActionEnd(e);
         }
     }
-
 
 }
 

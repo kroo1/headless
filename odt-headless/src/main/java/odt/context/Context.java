@@ -8,6 +8,7 @@ import javax.swing.event.DocumentListener;
 import odt.client.IComponent;
 import odt.client.IDialog;
 import odt.runner.IRootContainer;
+import odt.runner.IRunnerMode;
 import odt.runner.ODTRunnerHelper;
 
 import java.awt.event.ActionListener;
@@ -24,14 +25,6 @@ public class Context {
 
     private final ODTRunnerHelper oDTRunnerHelper;
 
-    public void runTest() throws IOException {
-        oDTRunnerHelper.runTest();
-    }
-
-    public void runTest(File fileToSave) throws IOException {
-        oDTRunnerHelper.runTest(fileToSave);
-    }
-
     public void runActions(String actions) throws IOException {
         oDTRunnerHelper.runActions(actions);
     }
@@ -42,10 +35,6 @@ public class Context {
 
     public DocumentListener getDocumentListener(IComponent c, DocumentListener l) {
         return oDTRunnerHelper.getDocumentListener(c, l);
-    }
-
-    public void startTest() {
-        oDTRunnerHelper.startTest();
     }
 
     public void runAction(String line) {
@@ -62,6 +51,22 @@ public class Context {
 
     public String getState() {
         return oDTRunnerHelper.getState();
+    }
+
+    public void runTest() {
+        try {
+            oDTRunnerHelper.runTest();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startTest() {
+        oDTRunnerHelper.startTest();
+    }
+
+    public void setRunnerMode(IRunnerMode runnerMode) {
+        oDTRunnerHelper.setRunnerMode(runnerMode);
     }
     
 }

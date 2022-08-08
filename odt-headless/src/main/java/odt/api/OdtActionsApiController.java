@@ -45,6 +45,7 @@ public class OdtActionsApiController implements OdtActionsApi, OdtActionsTestApi
                 odts.put(xSessionIdentifier, odt);
             }
             Context context = odt.init();
+            context.startTest();
             context.runActions(odTActionSequence.getActions());
             String state = context.getState();
             FileWriter writer = null;

@@ -1,0 +1,9 @@
+POST http://localhost:8080/odt-actions-test HTTP/1.1
+content-type: application/json;charset=UTF-8
+accept: application/json
+X-Session-Identifier: 1xxx-xxxx-xxxx-xxxx
+
+{
+    "actions":[
+    ]
+}
